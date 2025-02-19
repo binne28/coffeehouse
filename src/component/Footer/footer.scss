@@ -1,0 +1,19 @@
+.footer{
+    position: relative;
+    width: 100%;
+    .footer_top-content {
+        background-image: url('https://order.thecoffeehouse.com/_nuxt/img/footer-desktop.727f3a2.png');
+        background-size: cover; /* Để hình ảnh bao phủ toàn bộ div */
+        background-repeat: no-repeat; /* Ngăn lặp hình ảnh */
+        min-height: 180px;
+        height: auto; /* Đặt chiều cao cho div, điều chỉnh theo ý bạn */
+        width: 100%; /* Đặt chiều rộng đầy đủ */
+    }
+    
+
+    .footer_bottom-content{
+        width: 100%;
+        height: auto;
+        min-height: 180px;
+    }
+}

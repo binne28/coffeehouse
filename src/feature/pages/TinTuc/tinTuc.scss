@@ -1,0 +1,46 @@
+.tinTuc {
+    .box_body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .new_tabs {
+            margin-top: 2rem;
+            width: 40%;
+            max-width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            padding: 10px 30px;
+            border-radius: 100px;
+            border: 1px solid #ededed;
+        }
+        .new_tabs a {
+            text-decoration: none;
+            color: rgba(38, 38, 38, .5);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 32px;
+            padding: 0 15px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .new_tabs a:not(.active):hover {
+            color: #003cff;
+        }
+        .new_tabs .active {
+            background: radial-gradient(100% 488.28% at 0 100%, #e87800 0, #fa8c16 100%);
+            border-radius: 100px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+            color: #fff;
+        }
+    }
+    .hide{
+        display: none;
+    }
+}

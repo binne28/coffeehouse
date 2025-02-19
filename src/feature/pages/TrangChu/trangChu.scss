@@ -1,0 +1,28 @@
+.trang-chu {
+    margin-top: 5rem;
+    overflow-x: hidden;
+    /*nut chuyen slide*/
+    .carousel-control-prev,
+    .carousel-control-next {
+        display: none;
+    }
+
+    /* Thay đổi màu nền của chỉ báo đang được chọn */
+    .carousel-indicators .active {
+        background-color: #fb8d17;
+        /* Màu cam */
+    }
+    
+    .active{
+       div:nth-child(1)
+       {
+        background-color: rgb(255, 69, 0,0.5);
+       }
+       img{
+        transform: scale(1.25);
+       }
+       h5{
+        color: #fa8c16;
+       }
+    }
+}

@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.anh .active {
+    background-color: #fb8d17;
+}
+
+.active {
+    .anh {
+        background-color: #fcd094;
+    }
+
+    img {
+        transform: scale(1.1);
+    }
+
+    h5 {
+        color: #fa8c16;
+    }
+}
+
+.tab_content{
+    padding: 2rem 0;
+}
