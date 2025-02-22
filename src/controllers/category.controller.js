@@ -13,5 +13,15 @@ const createCategory = async (req, res)=>{
     }
 }
 
+const getCategory = async (req, res)=>{
+    try {
+        const category = await Category.getCategory();
+        return res.status(200).json({success: true, message: 'Get category successfully!!', data: category});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: 'Not found!!'})
+    }
+}
 
-module.exports = {createCategory};
+
+module.exports = {createCategory, getCategory};

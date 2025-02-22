@@ -12,6 +12,16 @@ class Category{
             console.error(error);
         }
     }
+
+    static async getCategory(){
+        try {
+            const category = await Categories.findAll();
+            return category;
+        } catch (error) {
+            console.error(error);
+            return {success: false};
+        }
+    }
 }
 
 

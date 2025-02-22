@@ -14,6 +14,18 @@ const Item = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
+        price: {
+            type: DataTypes.DECIMAL(10,2),
+            allowNull: false
+        },
+        description: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        img_url: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
         category_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -22,7 +34,8 @@ const Item = sequelize.define(
                 key: "id"
             },
             onDelete: "CASCADE",
-            onUpdate: "CASCADE"
+            onUpdate: "CASCADE", 
+            index: false
         },
     },
     {

@@ -11,7 +11,7 @@ const syncDatabase = async () => {
         await User.sync({ force: false }); // Tạo bảng nếu chưa tồn tại
         await Product.sync({alter: true});
         // await Foods.sync({force: false});
-        await Category.sync({alter: true});
+        await Category.sync({force: false});
         await CategoryItem.sync({force: true});
         console.log('✅ Bảng Users đã được đồng bộ thành công!');
         console.log('✅ Bảng Drinks đã được đồng bộ thành công!');

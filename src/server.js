@@ -12,8 +12,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: '*',
+  methods: "GET, POST, PUT, DELETE",
   credentials: true,
+  allowedHeaders: "Content-Type,Authorization",
 }));
 
 //Import session
@@ -39,7 +41,7 @@ router(app);
 
     // Chạy server sau khi kết nối DB
     app.listen(port, "0.0.0.0", () => {
-      console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
+      console.log(`🚀 Server đang chạy tại ${port}`);
     });
   } catch (error) {
     console.error("❌ Không thể kết nối MySQL:", error);

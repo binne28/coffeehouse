@@ -1,9 +1,10 @@
 const express = require('express');
-const route = express.Router();
-const {createCategory} = require('../controllers/category.controller');
+const router = express.Router();
+const {createCategory, getCategory} = require('../controllers/category.controller');
 const {adminMiddle, authMiddle} = require('../middlewares/auth.middleware')
 const upload = require('../middlewares/upload');
 
-route.post('/create', authMiddle, adminMiddle, upload.single('img_url'), createCategory);
+router.post('/create', authMiddle, adminMiddle, upload.single('img_url'), createCategory);
+router.get('/getAll', authMiddle, adminMiddle, getCategory);
 
-module.exports = route;
+module.exports = router;

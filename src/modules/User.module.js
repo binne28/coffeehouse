@@ -77,6 +77,19 @@ class User {
             return {success: false, message: 'Server error'};
         }
     }
+    static async get() {
+        try {
+            const users = await Users.findAll();
+            if (users.length > 0) {
+                return { message: 'Successfully', data: users };
+            } else {
+                return { message: 'No users found', data: [] };
+            }
+        } catch (error) {
+            return { message: `${error}` };
+        }
+    }
+    
 } 
 
 

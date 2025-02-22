@@ -75,4 +75,16 @@ const logout = async (req, res) =>{
     res.status(200).json({message: "Dang xuat thanh cong"});
 };
 
-module.exports = {register, login, logout};
+const getUser = async (req, res)=>{
+    try {
+        // const {username} = req.body;
+        const user = await User.get();
+        if(!user) return res.status(400).json({success: false, message: 'Not found user!'});
+        return res.status(200).json({success: true, message: 'Get successfully', data: user})
+    } catch (error) {
+        console.error(`${error}`);
+        return res.status(500).json({message: error.message});
+    }
+}
+
+module.exports = {register, login, logout, getUser};
