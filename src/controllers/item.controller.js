@@ -18,4 +18,26 @@ const created = async (req, res) => {
     }
 }
 
-module.exports = {created};
+const deletedItem = async (req, res)=>{
+    try {
+        const {id} = req.params;
+        const item = await Item.deleted(id);
+        if(!item) return res.status(400).json({success: false, message: 'Item not found!'});
+        return res.status(200).json({success: true, message: 'Deleted item successfully!'});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: message.error});
+    }
+}
+
+const getItem = async (req, res)=>{
+    try {
+        const item = await Item.getItem();
+        return res.status(200).json({success: true, message: 'Get item successfully!', data: item});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: message.error});
+    }
+}
+
+module.exports = {created, getItem, deletedItem};

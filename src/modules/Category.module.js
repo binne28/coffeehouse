@@ -22,6 +22,18 @@ class Category{
             return {success: false};
         }
     }
+    static async deleted(id){
+        try {
+            // Truy van tim danh muc
+            const category = await Categories.findByPk(id);
+            if(!category) return{success: false, message: 'Category not found'};
+            //Xoa danh muc khoi db
+            await category.destroy();
+            return {success: true, message: 'Delete successfully!!'};
+        } catch (error) {
+            return {success: false, message: message.error};
+        }
+    }
 }
 
 

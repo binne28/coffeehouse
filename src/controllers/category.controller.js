@@ -23,4 +23,16 @@ const getCategory = async (req, res)=>{
     }
 }
 
-module.exports = {createCategory, getCategory};
+const deleteCategory = async (req, res)=>{
+    try {
+        const {id} = req.params;
+        const category = await Category.deleted(id);
+        if(!category) return res.status(400).json({success: false, message: 'Delete unsuccessfully!'});
+        return res.status(200).json({success: true, message: 'Deleted successfully!'});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({success: false, message: message.error});
+    }
+}
+
+module.exports = {createCategory, getCategory, deleteCategory};
