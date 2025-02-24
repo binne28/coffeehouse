@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../configs/database');
-
+const Role = require('./Role');
 const User = sequelize.define(
     "User",
     {
@@ -22,10 +22,6 @@ const User = sequelize.define(
         password: {
             type: DataTypes.STRING,
         },
-        role: {
-            type: DataTypes.ENUM("User", "Admin"),
-            defaultValue: "User",
-        }
     },
     {
         tableName: 'Users',
@@ -33,14 +29,8 @@ const User = sequelize.define(
     }
 );
 
-// Đồng bộ hóa bảng Users
-(async () => {
-    try {
-        await User.sync({ force: false }); // Chỉ tạo bảng nếu chưa tồn tại
-        console.log('✅ Bảng Users đã được đồng bộ thành công!');
-    } catch (error) {
-        console.error('❌ Lỗi đồng bộ bảng Users:', error);
-    }
-});
+User.belongsToMany(Role, { through: "User_Role", foreignKey: "user_id" });
+Role.belongsToMany(User, { through: "User_Role", foreignKey: "role_id" });
+
 
 module.exports = User;

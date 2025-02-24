@@ -5,14 +5,20 @@ const Product = require('../models/Product');
 // const Foods = require('../models/food');
 const Category = require('../models/Cagetory/cagetories');
 const CategoryItem = require('../models/Cagetory/Item');
+const Role = require('../models/Role');
+const User_Role = require('../models/User_role');
+console.log(Role);
+
 const syncDatabase = async () => {
     try {
         // Đồng bộ hóa bảng Users
-        await User.sync({ force: false }); // Tạo bảng nếu chưa tồn tại
+        await User.sync({ alter: false }); // Tạo bảng nếu chưa tồn tại
         await Product.sync({alter: true});
         // await Foods.sync({force: false});
         await Category.sync({force: false});
         await CategoryItem.sync({force: true});
+        await Role.sync({force: false});
+        await User_Role.sync({force: false});
         console.log('✅ Bảng Users đã được đồng bộ thành công!');
         console.log('✅ Bảng Drinks đã được đồng bộ thành công!');
     } catch (error) {

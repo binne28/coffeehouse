@@ -2,6 +2,8 @@ const { where } = require('sequelize');
 const Users  = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Role = require('../models/Role');
+const User_Role = require('../models/User_role');
 require('dotenv').config();
 class User {
     static async findByUsername(username) {
@@ -12,35 +14,43 @@ class User {
         return await Users.findOne({where: {email}});
     }
 
-    static async createUser(email, username, password, role) {
+    static async createUser(email, username, password, role = "User") {
         try {
             const salt = await bcrypt.genSalt(10);
             const hashPassword = await bcrypt.hash(password, salt);
     
-            // 🛑 Kiểm tra xem có Admin trong DB chưa
-            const adminCount = await Users.count({ where: { role: "Admin" } });
-    
-            let userRole = "User";
             if (role === "Admin") {
-                if (adminCount === 0) {
-                    console.log("📌 Chưa có Admin nào, tạo tài khoản Admin đầu tiên!");
-                    userRole = "Admin";
-                } else {
+                const adminExists = await Users.findOne({
+                    include: {
+                        model: Role,
+                        where: { role_name: "Admin" }
+                    }
+                });
+    
+                if (adminExists) {
                     return { success: false, message: "Bạn không có quyền tạo Admin!" };
                 }
             }
     
-            const user = await Users.create({ email, username, password: hashPassword, role: userRole });
+            const user = await Users.create({ email, username, password: hashPassword });
+            const userRole = await Role.findOne({ where: { role_name: role || "User" } });
     
-            return user;
+            if (userRole) {
+                await User_Role.create({ user_id: user.id, role_id: userRole.id });
+            }
+    
+            // 🔹 Gán danh sách role vào user để trả về response đúng
+            const roleList = [{ authority: userRole.role_name }];
+    
+            return { success: true, message: "Tạo tài khoản thành công!", user, roleList };
+    
         } catch (error) {
-            console.error("❌ Lỗi tạo tài khoản:", error);
+            console.error("Lỗi tạo tài khoản:", error);
             return { success: false, message: "Lỗi khi tạo tài khoản!", error: error.message };
         }
     }
     
     
-
     static async checkUser(username, password){
         try {
             const user = await this.findByUsername(username);
@@ -54,29 +64,52 @@ class User {
         }
     }
 
-    static async logined(username, password){
+    static async logined(username, password) {
         try {
+            const user = await Users.findOne({
+                where: { username },
+                include: [{ model: Role, attributes: ['role_name'], through: { attributes: [] } }] // Lấy danh sách role
+            });
 
-            const user = await Users.findOne({where: {username}});
-            if(!user)
-                return {message: 'Login failed!!'}
-            const isPassword = await bcrypt.compare(password, user.password);
-            if(!isPassword)
-                return {message: 'Invalid password'}
-            
-            //Tao token
+            if (!user) {
+                return { success: false, message: 'Login failed!!' };
+            }
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if (!isPasswordValid) {
+                return { success: false, message: 'Invalid password' };
+            }
+            //Lay danh sach role tu database
+            const roles = user.Roles.map(role => role.role_name);
+
+            // Nếu có ADMIN, trả về ADMIN. Nếu không, trả về USER
+            const roleList = roles.includes("ADMIN") 
+                ? [{ authority: "ADMIN" }] 
+                : [{ authority: "USER" }];
             const token = jwt.sign(
-                {id: user.id, username: user.username, email: user.email},
+                {
+                    id: user.id,
+                    username: user.username,
+                    email: user.email,
+                    role: roleList
+                },
                 process.env.SECRET_KEY,
-                {expiresIn: '2h'} // Token het han
+                { expiresIn: '2h' }
             );
-            
-            return { success: true, message: "Login successfully", token, userRole: user.role, username: user.username};
+
+            return {
+                success: true,
+                message: "Login successfully",
+                token,
+                username: user.username,
+                roleList // Trả về danh sách role
+            };
+
         } catch (error) {
-            console.error('Login error: ', error);
-            return {success: false, message: 'Server error'};
+            console.error('Login error:', error);
+            return { success: false, message: 'Server error', error: error.message };
         }
     }
+
     static async get() {
         try {
             const users = await Users.findAll();

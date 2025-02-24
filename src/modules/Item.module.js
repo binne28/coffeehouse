@@ -29,6 +29,20 @@ class ItemProduct{
             return {success: false, message: message.error};
         }
     }
+
+    static async getItem(id){
+        try {
+            const item = await Items.findByPk(id);
+            if(!item) return {message: 'Not found item'};
+            return item;
+        } catch (error) {
+            return {message: message.error};  
+        }
+    }
+
+    static async updateItem(name, price, img_url, description){
+
+    }
 }
 
 
