@@ -29,7 +29,6 @@ const register = async (req, res) => {
                 // roleList: newUser.roleList // 🔹 Đảm bảo roleList đúng format
             }
         });
-
     } catch (error) {
         console.error("Lỗi server:", error);
         return res.status(500).json({ success: false, message: "Lỗi server!", error: error.message });
@@ -72,9 +71,6 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { login };
-
-
 const logout = async (req, res) =>{
     req.session.destroy((err)=>{
         if(err) return res.status(500).json({message: 'Loi khi dang xuat'});
@@ -85,12 +81,12 @@ const logout = async (req, res) =>{
 };
 
 const getUser = async (req, res)=>{
-    try {
+    try{
         // const {username} = req.body;
         const user = await User.get();
         if(!user) return res.status(400).json({success: false, message: 'Not found user!'});
         return res.status(200).json({success: true, message: 'Get successfully', data: user})
-    } catch (error) {
+    }catch (error) {
         console.error(`${error}`);
         return res.status(500).json({message: error.message});
     }
