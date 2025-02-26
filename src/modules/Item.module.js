@@ -1,11 +1,12 @@
 const Items = require('../models/Cagetory/Item');
 
 class ItemProduct{
-    static async createItem(name, price, img_url, description, category_id){
+    static async createItem(name, price, imgUrl, description, category_id){
         try {
-            const item = await Items.create({name, price, img_url, description, category_id});
+            const item = await Items.create({name, price, img_url: imgUrl, description, category_id});
             return item;
         } catch (error) {
+            // console.error(error);
             return {message: 'Cannot create product'};
         }
     }
@@ -40,10 +41,19 @@ class ItemProduct{
         }
     }
 
-    static async updateItem(name, price, img_url, description){
-
+    static async updateItem(id, data){
+        try {
+            const [affectedRows] = await Items.update(data, {where: id});
+            if(affectedRows === 0){
+                console.log('Not found Item');
+                return null;
+            }
+            return await Items.findByPk(id);
+        } catch (error) {
+            return {message: error.message};
+        }
     }
-}
+};
 
 
 module.exports = ItemProduct;

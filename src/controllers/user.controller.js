@@ -26,7 +26,6 @@ const register = async (req, res) => {
             data: {
                 id: newUser.user.id,
                 username: newUser.user.username,
-                // roleList: newUser.roleList // 🔹 Đảm bảo roleList đúng format
             }
         });
     } catch (error) {

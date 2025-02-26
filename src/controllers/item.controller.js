@@ -42,10 +42,15 @@ const getItem = async (req, res)=>{
 
 const updated = async (req, res)=>{
     try {
-        // const item = await ;
+        const {id} = req.params;
+        const data = {name, price, img_url, description};
+        const item = await Item.updateItem(id, data);
+        if(!item) return res.status(400).json({success: false, message: 'Update unsucessfully!'});
+        return res.status(200).json({success: true, message: 'Update successfully!!'});
     } catch (error) {
-        
+        console.error(error);
+        return res.status(500).json({success: false, message: error.message});
     }
 }
 
-module.exports = {created, getItem, deletedItem};
+module.exports = {created, getItem, deletedItem, updated};

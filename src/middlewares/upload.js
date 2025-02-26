@@ -1,21 +1,14 @@
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../configs/cloudinary');
 
-// Đường dẫn chính xác đến thư mục uploads
-const uploadDir = path.join(__dirname, "../upload");
-
-// Kiểm tra nếu thư mục chưa tồn tại, thì tạo nó
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir); // ✅ Đặt đúng biến, không phải chuỗi 'uploadDir'
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // ✅ Đúng cú pháp
+// Cấu hình storage Cloudinary cho Multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'uploads', // Tên thư mục trên Cloudinary
+        format: async (req, file) => 'png', // Định dạng ảnh (png, jpg, etc.)
+        public_id: (req, file) => file.originalname.split('.')[0] // Đặt tên file theo tên gốc
     }
 });
 
