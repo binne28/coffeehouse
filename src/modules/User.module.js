@@ -112,9 +112,9 @@ class User {
 
     static async get() {
         try {
-            const users = await Users.findAll();
+            const users = await Users.findAll({attributes: ['email', 'username']});
             if (users.length > 0) {
-                return { message: 'Successfully', data: users };
+                return { message: 'Successfully', data: users};
             } else {
                 return { message: 'No users found', data: [] };
             }
@@ -122,7 +122,6 @@ class User {
             return { message: `${error}` };
         }
     }
-    
 } 
 
 

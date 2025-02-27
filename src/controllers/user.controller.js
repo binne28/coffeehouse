@@ -83,8 +83,10 @@ const getUser = async (req, res)=>{
     try{
         // const {username} = req.body;
         const user = await User.get();
-        if(!user) return res.status(400).json({success: false, message: 'Not found user!'});
-        return res.status(200).json({success: true, message: 'Get successfully', data: user})
+        if(!user) return res.status(400).json({success: false, message: 'Not found user!', email: user.email, username: user.username});
+        return res.status(200).json({
+            success: true, message: 'Get successfully', 
+            data: user})
     }catch (error) {
         console.error(`${error}`);
         return res.status(500).json({message: error.message});
