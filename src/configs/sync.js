@@ -7,6 +7,8 @@ const Category = require('../models/Cagetory/cagetories');
 const CategoryItem = require('../models/Cagetory/Item');
 const Role = require('../models/Role');
 const User_Role = require('../models/User_role');
+const Order = require('../models/Order');
+const Cart = require('../models/Cart');
 console.log(Role);
 
 const syncDatabase = async () => {
@@ -19,6 +21,8 @@ const syncDatabase = async () => {
         await CategoryItem.sync({force: true});
         await Role.sync({force: false});
         await User_Role.sync({force: false});
+        await Order.sync({force: false});
+        await Cart.sync({force: false});
         console.log('✅ Bảng Users đã được đồng bộ thành công!');
         console.log('✅ Bảng Drinks đã được đồng bộ thành công!');
     } catch (error) {
